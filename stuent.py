@@ -64,4 +64,19 @@ class graduatestudent(student):
           super().display_info()
           print("program title:",  self.program_title)
 
+grad = graduatestudent("Alice", 1001, "Master of Computer Science")
+under = undergraduatestudent("Bob", 2001, "Business")
+
+grad.add_grades(88)
+grad.add_grades(92)
+grad.add_grades(79)
+
+under.add_grades(70)
+under.add_grades(85)
+under.add_grades(90)
+
+grad.display_info()
+print()
+under.display_info()
+
         
