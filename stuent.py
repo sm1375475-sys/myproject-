@@ -1,11 +1,11 @@
 class student:
-    def __inti__(self, name, student_id, grade):
-        self.name=name
-        self.student_id=student_id
-        self.__grade=[]
+    def __init__(self, name, student_id):
+        self.name = name
+        self.student_id = student_id
+        self.__grades = []
 
-        def get_grades(self):
-         return self.__grades
+    def get_grades(self):
+        return self.__grades
 
     def add_grades(self, grade):
         if 0 <= grade <= 100:
@@ -31,7 +31,7 @@ class student:
         elif avg >= 60:
             return "D"
         else:
-         return "F"
+            return "F"
 
     def display_info(self):
         print("Name:", self.name)
@@ -40,32 +40,31 @@ class student:
         print("Average:", self.calculate_average())
         print("Letter Grade:", self.calculate_grade())
 
-    def display_info(self):
-        print("student name:", self.name)
-        print("student id:", self.student_id)
-        print("student grade:", self.grade)
-class undergraduatestudent(student):
-     def __init__(self, name, student_id, major):
-         super(). __init__(self, name, student_id)
-         self.major=major 
 
-     def display_info(self):
-         print("undergraduate student")
-         super().display_info()
-         print("major:", self.major)
+class undergraduatestudent(student):
+    def __init__(self, name, student_id, major):
+        super().__init__(name, student_id)
+        self.major = major
+
+    def display_info(self):
+        print("undergraduate student")
+        super().display_info()
+        print("major:", self.major)
+
 
 class graduatestudent(student):
-      def __init__(self, name, student_id, program_title):
-          super().__init__(self, name, student_id)
-          self.program_title=program_title
+    def __init__(self, name, student_id, program_title):
+        super().__init__(name, student_id)
+        self.program_title = program_title
 
-      def display_info(self):
-          print("graduate studet")
-          super().display_info()
-          print("program title:",  self.program_title)
+    def display_info(self):
+        print("graduate student")
+        super().display_info()
+        print("program title:", self.program_title)
+
 
 grad = graduatestudent("Alice", 1001, "Master of Computer Science")
-under = undergraduatestudent("Bob", 2001, "Business")
+under = undergraduatestudent("mai", 2001, "Business")
 
 grad.add_grades(88)
 grad.add_grades(92)
@@ -78,5 +77,3 @@ under.add_grades(90)
 grad.display_info()
 print()
 under.display_info()
-
-        
