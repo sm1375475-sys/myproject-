@@ -1,4 +1,4 @@
-class student:
+class Student:
     def __init__(self, name, student_id):
         self.name = name
         self.student_id = student_id
@@ -41,7 +41,7 @@ class student:
         print("Letter Grade:", self.calculate_grade())
 
 
-class undergraduatestudent(student):
+class UndergraduateStudent(Student):
     def __init__(self, name, student_id, major):
         super().__init__(name, student_id)
         self.major = major
@@ -52,7 +52,7 @@ class undergraduatestudent(student):
         print("major:", self.major)
 
 
-class graduatestudent(student):
+class GraduateStudent(Student):
     def __init__(self, name, student_id, program_title):
         super().__init__(name, student_id)
         self.program_title = program_title
@@ -63,17 +63,84 @@ class graduatestudent(student):
         print("program title:", self.program_title)
 
 
-grad = graduatestudent("Alice", 1001, "Master of Computer Science")
-under = undergraduatestudent("mai", 2001, "Business")
+def grades_sort(students):
+    n = len(students)
+    for i in range(n - 1):
+        for j in range(n - 1 - i):
+            if students[j].calculate_average() > students[j + 1].calculate_average():
+                students[j], students[j + 1] = students[j + 1], students[j]
+    return students
 
-grad.add_grades(88)
-grad.add_grades(92)
-grad.add_grades(79)
 
-under.add_grades(70)
-under.add_grades(85)
-under.add_grades(90)
+s1 = GraduateStudent("Alice", 1001, "Master of Computer Science")
+s2 = UndergraduateStudent("Bob", 2001, "Business")
+s3 = UndergraduateStudent("Carol", 2002, "Biology")
+s4 = GraduateStudent("Dave", 1002, "Master of Data Science")
 
-grad.display_info()
-print()
-under.display_info()
+s1.add_grades(88)
+s1.add_grades(92)
+s1.add_grades(79)
+
+s2.add_grades(70)
+s2.add_grades(85)
+s2.add_grades(90)
+
+s3.add_grades(95)
+s3.add_grades(91)
+s3.add_grades(98)
+
+s4.add_grades(80)
+s4.add_grades(85)
+s4.add_grades(80)
+
+students = [s1, s2, s3, s4]
+
+for s in grades_sort(students):
+    s.display_info()
+    print()
+
+print("Empty list:", grades_sort([]))
+
+print("One student:")
+for s in grades_sort([s1]):
+    print(s.name, round(s.calculate_average(), 2))
+
+print("Equal averages:")
+for s in grades_sort([s2, s4]):
+    print(s.name, round(s.calculate_average(), 2))
+
+
+def save_students(students, filename):
+    file = open(filename, "w")
+    for s in students:
+        grades = ";".join(str(g) for g in s.get_grades())
+        if isinstance(s, GraduateStudent):
+            file.write(f"Graduate,{s.name},{s.student_id},{s.program_title},{grades}\n")
+        else:
+            file.write(f"Undergraduate,{s.name},{s.student_id},{s.major},{grades}\n")
+    file.close()
+
+
+def load_students(filename):
+    students = []
+    try:
+        file = open(filename, "r")
+        for line in file:
+            kind, name, sid, extra, grades = line.strip().split(",")
+            if kind == "Graduate":
+                s = GraduateStudent(name, sid, extra)
+            else:
+                s = UndergraduateStudent(name, sid, extra)
+            for g in grades.split(";"):
+                s.add_grades(float(g))
+            students.append(s)
+        file.close()
+    except FileNotFoundError:
+        print("File not found")
+    return students
+
+
+save_students(students, "students.txt")
+for s in load_students("students.txt"):
+    s.display_info()
+load_students("missing.txt")
