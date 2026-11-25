@@ -144,3 +144,42 @@ save_students(students, "students.txt")
 for s in load_students("students.txt"):
     s.display_info()
 load_students("missing.txt")
+
+import unittest
+
+
+class testClass(unittest.TestCase):
+
+    def test_average(self):
+        s = Student("mia", 2001)
+        s.add_grades(80)
+        s.add_grades(90)
+        s.add_grades(100)
+        self.assertEqual(s.calculate_average(), 90)
+
+    def test_invalid_grades(self):
+        s = Student("mia", 2001)
+        s.add_grades(150)
+        s.add_grades(-5)
+        self.assertEqual(s.get_grades(), [])
+
+    def test_no_grades(self):
+        s = Student("mia", 2001)
+        self.assertEqual(s.calculate_average(), 0)
+        self.assertEqual(s.calculate_grade(), "N/A")
+
+    def test_read_file(self):
+        u = UndergraduateStudent("alice", 2002, "busniess")
+        u.add_grades(88)
+        u.add_grades(67)
+        save_students([u], "test_students.txt")
+        students = read_students("test_students.txt")
+        self.assertEqual(students[0].name, "alice")
+        self.assertEqual(students[0].get_grades(), [88, 67])
+
+    def test_missing_file(self):
+        self.assertEqual(read_students("missing_file.txt"), [])
+
+
+if __name__ == "__main__":
+    unittest.main()
